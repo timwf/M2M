@@ -39,4 +39,4 @@ Thumbs.db
 # Folders #
 ######################
 node_modules
-assets
+/assets
