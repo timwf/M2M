@@ -46,6 +46,7 @@ $(document).ready(() => {
   const $header = $('.page-header');
   let isObserver = true;
   let observer;
+  // let controller = new ScrollMagic.Controller();
   let isTouch;
 
   if (
@@ -163,6 +164,13 @@ $(document).ready(() => {
     });
   }
 
+  function initSM() {
+    if (controller === null || controller === undefined) {
+      // reinitialize ScrollMagic only if it is not already initialized
+      controller = new ScrollMagic.Controller();
+    }
+  }
+
   const doneResizing = debounce(() => {
     const width = $(window).width();
 
@@ -172,10 +180,7 @@ $(document).ready(() => {
       // if (controller !== null && controller !== undefined) {
       //   // completely destroy the controller
       //   controller = controller.destroy(true);
-      //   if (controller === null || controller === undefined) {
-      //     // reinitialize ScrollMagic only if it is not already initialized
-      //     controller = new ScrollMagic.Controller();
-      //   }
+      //   initSM()
       // }
     }
   }, 500);
@@ -184,38 +189,15 @@ $(document).ready(() => {
   /* ============= */
   bindEvents();
 
-  // if (isObserver) {
-  //   $('.js-visibility').each((i, el) => {
-  //     observer.observe(el);
-  //   });
-  // }
+  if (isObserver) {
+    $('.js-visibility').each((i, el) => {
+      observer.observe(el);
+    });
+  }
 
   $(window).on('scroll', () => {});
 
   $(window).on('load', () => {});
 
   $(window).on('resize', doneResizing);
-
-  // /* Trigger resize once */
-  // function doneResizing() {
-  //   const width = $(window).width();
-
-  //   if (wWidth !== width) {
-  //     wWidth = width;
-
-  //     if (controller !== null && controller !== undefined) {
-  //       // completely destroy the controller
-  //       controller = controller.destroy(true);
-  //       if (controller === null || controller === undefined) {
-  //         // reinitialize ScrollMagic only if it is not already initialized
-  //         controller = new ScrollMagic.Controller();
-  //       }
-  //     }
-  //   }
-  // }
-
-  // $(window).resize(function() {
-  //   clearTimeout(resizeId);
-  //   resizeId = setTimeout(doneResizing, 500);
-  // });
 });

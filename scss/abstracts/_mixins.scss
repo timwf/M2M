@@ -26,9 +26,11 @@
 /// Make a context based selector a little more friendly
 /// @author Hugo Giraudel
 /// @param {String} $context
-@mixin when-inside($context) {
-  #{$context} & {
-    @content;
+@mixin when-inside($classes...) {
+  @each $class in $classes {
+    #{$class} & {
+      @content;
+    }
   }
 }
 
@@ -64,4 +66,49 @@
   height: 100%;
   object-fit: cover;
   font-family: 'object-fit: cover;';
+}
+
+@mixin underline {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    @include transition;
+    content: '';
+  }
+
+  &:hover {
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+
+  @include when-inside('.is-touch') {
+    &:hover {
+      &::before {
+        transform: scaleX(0);
+      }
+    }
+  }
+}
+
+@mixin transition-sequence($start, $interval, $children: '') {
+  @for $i from 1 through 10 {
+    @if $children != '' {
+      &:nth-child(#{$i}) #{$children} {
+        transition-delay: calc(#{$start} + #{$i} * #{$interval});
+      }
+    } @else {
+      &:nth-child(#{$i}) {
+        transition-delay: calc(#{$start} + #{$i} * #{$interval});
+      }
+    }
+  }
 }
