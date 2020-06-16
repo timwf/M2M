@@ -44,6 +44,10 @@ $(document).ready(() => {
   let wWidth = $(window).width();
   let navState = false;
   const $header = $('.page-header');
+  const $nav = $header.find('.nav');
+  const $parentLi = $nav.find('.menu-item-has-children');
+  const $parentLinks = $parentLi.children('a');
+  const $subMenu = $parentLi.children('.sub-menu');
   let isObserver = true;
   let observer;
   // let controller = new ScrollMagic.Controller();
@@ -59,19 +63,22 @@ $(document).ready(() => {
   }
 
   if (isObserver) {
-    observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    });
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -15% 0px' }
+    );
   }
 
   function isTouchDevice() {
     const prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
-    const mq = query => {
+    const mq = (query) => {
       return window.matchMedia(query).matches;
     };
 
@@ -102,9 +109,9 @@ $(document).ready(() => {
   // leading edge, instead of the trailing.
   function debounce(func, wait, immediate, ...args) {
     let timeout;
-    return function() {
+    return function () {
       const context = this;
-      const later = function() {
+      const later = function () {
         timeout = null;
         if (!immediate) func.apply(context, args);
       };
@@ -138,9 +145,7 @@ $(document).ready(() => {
       const scrollTop = $('html').scrollTop()
         ? $('html').scrollTop()
         : $('body').scrollTop(); // Works for Chrome, Firefox, IE...
-      $('html')
-        .addClass('disable-scrolling')
-        .css('top', -scrollTop);
+      $('html').addClass('disable-scrolling').css('top', -scrollTop);
     }
   }
 
@@ -148,6 +153,39 @@ $(document).ready(() => {
     const scrollTop = parseInt($('html').css('top'), 10);
     $('html').removeClass('disable-scrolling');
     $('html,body').scrollTop(-scrollTop);
+  }
+
+  function updateNav() {
+    $header.removeClass('is-opened');
+    $parentLi.removeClass('is-active');
+    $parentLinks.attr('aria-expanded', 'false');
+
+    if (wWidth < 1280) {
+      $subMenu.slideUp();
+    } else {
+      $subMenu.show();
+    }
+  }
+
+  function handleNavTouch(e) {
+    const $item = $(e.target);
+    const $submenu = $item.siblings('.sub-menu');
+
+    if ($item.parent().hasClass('is-active')) {
+      $item.attr('aria-expanded', 'false').parent().removeClass('is-active');
+
+      if (wWidth < 1280) {
+        $submenu.slideUp();
+      }
+    } else {
+      $parentLi.removeClass('is-active');
+      $item.attr('aria-expanded', 'true').parent().addClass('is-active');
+
+      if (wWidth < 1280) {
+        $subMenu.slideUp();
+        $submenu.slideDown();
+      }
+    }
   }
 
   function bindEvents() {
@@ -161,6 +199,28 @@ $(document).ready(() => {
       }
 
       navState = !navState;
+    });
+
+    $parentLinks.on('touchend', (e) => {
+      e.preventDefault();
+      handleNavTouch(e);
+    });
+
+    /* Navigation with tabbing */
+    $(window).keyup((e) => {
+      const code = e.keyCode ? e.keyCode : e.which;
+
+      if (code === 9) {
+        if ($parentLinks.filter(':focus').length) {
+          handleNavTouch(e);
+        } else if ($nav.find('>li>a:focus').length) {
+          $parentLi.removeClass('is-active');
+
+          if (wWidth < 1280) {
+            $parentLi.children('.sub-menu').slideUp();
+          }
+        }
+      }
     });
   }
 
