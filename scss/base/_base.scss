@@ -13,6 +13,7 @@ html {
 body {
   max-width: 100%;
   overflow-x: hidden;
+  background-color: #EFEFEF
 }
 
 /**
@@ -57,7 +58,7 @@ h5 {
   color: $text-color;
 }
 
-p{
+p, li{
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
 }

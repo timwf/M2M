@@ -16,12 +16,32 @@
 @import 'components/button', 'components/hamburger';
 
 
+
+/*=============================================
+=            Spacer            =
+=============================================*/
+
+.spacer{
+    height: $spacer;
+}
+
+
+/*=====  End of Spacer  ======*/
+
+
+
+
+
+/*=============================================
+=            Content Block            =
+=============================================*/
+
 .content-block{
-    & .content-block__header{
+    &__header{
         & h1, h2, h3, h4, h5{
             font-size: 38px;
             letter-spacing: 0.6rem;
-            margin-bottom: 8rem;            
+            margin-bottom: $spacer;            
         }
         & ::after{
             content: "";
@@ -32,7 +52,7 @@
             padding-top: 22px;          
         }
     }
-    & .content-block__content{
+    &__content{
         & p{
             letter-spacing: 0.07rem;
             line-height: 2.5rem;
@@ -40,6 +60,8 @@
     }
     &--center{
         text-align: center;
+        max-width: 672px;
+        margin: auto;
         & .content-block__header{
             & ::after{
                 margin-left: calc(50% - 16px)
@@ -47,3 +69,71 @@
         }
     }
 }
+
+/*=====  End of Section comment block  ======*/
+
+
+/*=============================================
+=            Selection Tabs            =
+=============================================*/
+
+.selection-tabs{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    &__item{
+        padding: 10px 40px;
+        display: flex;
+        align-items: center;
+        background-color: $raised-bg-color;
+        width: fit-content;
+        margin: 8px 8px;
+        font-size: 16px;
+        font-weight: 500;
+        box-shadow: $standard-box-shadow;
+        &--label{
+            font-weight: 700;
+            background: none;
+            margin-left: 0;
+            box-shadow: none;
+        }
+    }
+
+
+}
+
+/*=====  End of Selection Tabs  ======*/
+
+
+/*=============================================
+=            Module Cards            =
+=============================================*/
+
+.module-card-container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.module-card{
+    box-shadow: $standard-box-shadow;
+    margin: 20px;
+    padding: 46px 35px;
+    min-width: 250px;
+    &__header{
+        text-align: center;
+        & h1{
+            margin-bottom: 20px;
+        }
+    }
+}
+
+
+/*=====  End of Module Cards  ======*/
+
+
+
+
+
+
+

@@ -7,6 +7,12 @@
 $text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue',
   'Helvetica', 'Arial', sans-serif !default;
 
+// Standard Box Shadow
+$standard-box-shadow: 0px 0px 50px #00000017;
+
+//Section Spacer
+$spacer: 8rem;
+
 /// Copy text color
 /// @type Color
 $text-color:#383E4E !default;
@@ -14,6 +20,10 @@ $text-color:#383E4E !default;
 /// Main brand color
 /// @type Color
 $brand-color: #E95744 !default;
+
+/// Raised Background
+/// @type Color
+$raised-bg-color: #EFEFEF !default;
 
 /// Light grey
 /// @type Color
